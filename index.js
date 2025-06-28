@@ -31,7 +31,7 @@ app.get('/api/2015-12-25', (req, res) => {
   res.status(200).json({ unix: unix, utc: utc })
 })
 
-app.get('/api/:date', (req, res) => {
+app.get('/api/:date?', (req, res) => {
   const { date } = req.params;
 
   let parsedDate;
