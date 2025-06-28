@@ -25,19 +25,18 @@ app.get("/api/hello", function (req, res) {
 });
 
 
-app.get('/api/2015-12-25', (req, res) => {
-  const unix = Date.now();
-  const utc = new Date(unix);
-  res.status(200).json({ unix: unix, utc: utc })
-})
-
 app.get('/api/:date?', (req, res) => {
-  const { date } = req.params;
-
+  let { date } = req.params;
   let parsedDate;
 
-  if (/^\d+$/.test(date)) {
-    parsedDate = new Date(parseInt(date));
+  if (!date) {
+    parsedDate = new Date();
+  } else if (/^\d+$/.test(date)) {
+    if (date.length <= 10) {
+      parsedDate = new Date(parseInt(date) * 1000); // seconds → ms
+    } else {
+      parsedDate = new Date(parseInt(date)); // already ms
+    }
   } else {
     parsedDate = new Date(date);
   }
@@ -51,6 +50,9 @@ app.get('/api/:date?', (req, res) => {
     utc: parsedDate.toUTCString()
   });
 });
+
+
+
 
 
 
